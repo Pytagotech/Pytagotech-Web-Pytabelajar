@@ -1,0 +1,23 @@
+html,
+body {
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#mobileMenu {
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.25s ease-in-out;
+}
+
+#mobileMenu:not(.hidden) {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
