@@ -1,5 +1,5 @@
 <header class="bg-white/90 backdrop-blur-sm shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-40 border-b border-gray-100 animate-fade-down">
-  <h1 class="text-xl font-semibold text-[#1E3A8A]">@yield('page_title')</h1>
+  <h1 class="md:ml-0 ml-8 text-xl font-semibold text-[#1E3A8A]">@yield('page_title')</h1>
 
   <div class="flex items-center gap-4 animate-avatar">
     <span class="text-gray-700 font-medium hidden sm:block">{{ auth()->user()->name ?? 'Admin' }}</span>
