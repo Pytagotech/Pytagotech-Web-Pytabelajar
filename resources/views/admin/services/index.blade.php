@@ -14,7 +14,7 @@
     <h2 class="text-xl font-semibold text-[#1E3A8A]">Daftar Services</h2>
     <a href="{{ route('admin.services.create') }}"
        class="px-4 py-2 bg-[#1E3A8A] text-white rounded-lg font-semibold hover:bg-[#2563EB] transition">
-      ➕ Tambah Service
+      <i class="fa-solid fa-plus"></i> Tambah Service
     </a>
   </div>
 
@@ -36,7 +36,7 @@
             <td class="py-3 px-4 text-gray-700">{{ Str::limit($service->description, 70) }}</td>
             <td class="py-3 px-4 text-center space-x-2">
               <a href="{{ route('admin.services.edit', $service->id) }}"
-                 class="inline-block px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">✏️ Edit</a>
+                 class="inline-block px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
 
               <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" class="inline-block"
                     onsubmit="return confirm('Yakin ingin menghapus service ini?')">
@@ -44,7 +44,7 @@
                 @method('DELETE')
                 <button type="submit"
                         class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
-                  🗑️ Hapus
+                  <i class="fa-solid fa-trash-can"></i> Hapus
                 </button>
               </form>
             </td>

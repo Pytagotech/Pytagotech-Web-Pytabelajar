@@ -26,7 +26,7 @@
 
       <div class="flex justify-between items-center">
         <a href="{{ route('admin.services.index') }}"
-           class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition">← Kembali</a>
+           class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
 
         <button type="submit"
                 class="px-5 py-2 bg-[#1E3A8A] text-white rounded-lg font-semibold hover:bg-[#2563EB] transition">
