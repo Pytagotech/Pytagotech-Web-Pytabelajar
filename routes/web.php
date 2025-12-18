@@ -18,15 +18,20 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register.show');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+    Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
 // 🔓 Logout (harus pakai POST)
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
 // 👑 Admin Dashboard (hanya admin)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [AdminController::class, 'updateProfile'])->name('profile.update');
 
@@ -37,6 +42,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 // 👤 User Profile (user biasa)
 Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', [AuthController::class, 'showVerifyEmail'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
+    Route::post('/email/verification-notification', [AuthController::class, 'resendVerification'])->middleware('throttle:6,1')->name('verification.resend');
+
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('user.profile');
     Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('user.profile.update');
 });

@@ -72,7 +72,7 @@
 
 </head>
 
-<body class="bg-[#F5FAFF] text-slate-800">
+<body class="bg-white text-slate-800">
 
     <div class="animate-fade-down">
         @include('partials.navbar')
