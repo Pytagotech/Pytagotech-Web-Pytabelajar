@@ -63,7 +63,6 @@
         html,
         body {
             overflow: auto;
-            scroll-behavior: smooth
         }
 
         ::-webkit-scrollbar {
