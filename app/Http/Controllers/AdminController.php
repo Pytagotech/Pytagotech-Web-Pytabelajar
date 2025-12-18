@@ -15,11 +15,13 @@ class AdminController extends Controller
     public function dashboard()
 {
     $totalUsers = User::count();
+    $totalServices = \App\Models\Service::count();
 
     return view('admin.dashboard', [
         'title' => 'Dashboard Admin',
         'user' => auth()->user(),
         'totalUsers' => $totalUsers,
+        'totalServices' => $totalServices,
     ]);
 }
 

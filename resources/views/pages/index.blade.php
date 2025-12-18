@@ -91,7 +91,7 @@
                         <p class="mt-2 text-slate-600">{{ $service->description }}</p>
                         <div class="mt-4">
                             <a class="inline-block px-3 py-2 rounded-lg text-sm font-semibold bg-[#E6FBFF] text-[#2A7EA3]"
-                                href="#">
+                                href="https://wa.me/62881026454972" target="_blank">
                                 Daftar
                             </a>
                         </div>
@@ -164,7 +164,7 @@
             <p class="mt-3">Klik tombol di bawah untuk langsung terhubung dengan Admin melalui WhatsApp.</p>
             <div class="mt-6">
                 {{-- link yang bisa di hubungi --}}
-                <a href="https://wa.me/6281234567890" target="_blank" id="contactAdmin"
+                <a href="https://wa.me/62881026454972" target="_blank" id="contactAdmin"
                     class="inline-flex items-center gap-3 bg-white text-[#2A7EA3] font-semibold px-5 py-3 rounded-xl shadow-lg hover:translate-y-[-2px] transition">
                     Hubungi Admin
                 </a>
