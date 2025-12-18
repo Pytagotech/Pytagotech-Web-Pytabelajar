@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password as RulesPassword;
 
 class AuthController extends Controller
 {
@@ -42,7 +43,7 @@ class AuthController extends Controller
             $data = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
-                'password' => ['required', 'confirmed', Password::min(6)],
+                'password' => ['required', 'confirmed', RulesPassword::min(6)],
             ]);
 
             DB::beginTransaction();
@@ -158,7 +159,7 @@ class AuthController extends Controller
 
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('resent', 'Verification link sent!');
+        return back()->with('resent', true);
     }
 
     /**

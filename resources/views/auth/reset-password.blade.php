@@ -24,7 +24,7 @@
 <body class="flex items-center justify-center min-h-screen p-6">
     <div class="w-full max-w-md card p-8 rounded-2xl shadow-xl">
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-green-600">Password Baru 🛡️</h1>
+            <h1 class="text-2xl font-bold text-green-600">Password Baru</h1>
             <p class="text-slate-500 text-sm mt-2">Silakan buat password baru yang kuat untuk akun kamu.</p>
         </div>
 
