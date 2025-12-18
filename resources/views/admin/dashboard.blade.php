@@ -15,8 +15,8 @@
   </div>
 
   <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-    <h3 class="font-semibold text-[#1E3A8A] mb-2"><i class="fa-regular fa-comments"></i> Pesan Masuk</h3>
-    <p class="text-3xl font-bold text-[#2563EB]">345</p>
+    <h3 class="font-semibold text-[#1E3A8A] mb-2"><i class="fa-solid fa-users"></i> Total Siswa</h3>
+    <p class="text-3xl font-bold text-[#2563EB]">123</p>
   </div>
 </div>
 

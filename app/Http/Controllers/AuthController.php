@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -33,22 +38,33 @@ class AuthController extends Controller
             abort(403, 'Halaman tidak tersedia. Logout dulu untuk mengakses.');
         }
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => ['required', 'confirmed', Password::min(6)],
-        ]);
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => ['required', 'confirmed', Password::min(6)],
+            ]);
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => 'user', // default user
-        ]);
+            DB::beginTransaction();
 
-        Auth::login($user);
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'role' => 'user', // default user
+            ]);
+            DB::commit();
 
-        return redirect('/login')->with('success', 'Akun berhasil dibuat! Selamat datang di Pytabelajar 🎉');
+            Auth::login($user);
+
+            event(new Registered($user));
+
+            return redirect()->route('verification.notice')->with('success', 'Akun berhasil dibuat! Selamat datang di Pytabelajar 🎉');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses login: '.$e->getMessage())->withInput();
+        }
     }
 
     /**
@@ -73,26 +89,28 @@ class AuthController extends Controller
             abort(403, 'Halaman tidak tersedia. Logout dulu untuk mengakses.');
         }
 
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        try {
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
 
-        $remember = $request->has('remember');
+            $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+            if (Auth::attempt($credentials, $remember)) {
+                $request->session()->regenerate();
 
-            if (Auth::user()->isAdmin()) {
-                return redirect()->intended(route('admin.dashboard'));
+                if (Auth::user()->isAdmin()) {
+                    return redirect()->intended(route('admin.dashboard'));
+                }
+
+                return redirect()->intended(route('home'));
+            } else {
+                return redirect()->back()->with('error', 'Email atau password salah.')->withInput();
             }
-
-            return redirect()->intended(route('home'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses login: '.$e->getMessage())->withInput();
         }
-
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
     }
 
     /**
@@ -103,7 +121,105 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('home');
+    }
+
+    /**
+     * Tampilan halaman verifikasi email
+     */
+    public function showVerifyEmail()
+    {
+        if (Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('home');
+        }
+
+        return view('auth.verify-email');
+    }
+
+    /**
+     * Verifikasi email
+     */
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+
+        return redirect()->route('home')->with('success', 'Email berhasil diverifikasi!');
+    }
+
+    /** 
+     * Kirim ulang link verifikasi email
+     */
+    public function resendVerification(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->route('home');
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('resent', 'Verification link sent!');
+    }
+
+    /**
+     * Tampilkan halaman lupa password
+     */
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    /**
+     * Kirim email reset password
+     */
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::ResetLinkSent
+        ? back()->with(['status' => __($status)])
+        : back()->withErrors(['email' => __($status)]);
+    }
+
+    /**
+     * Tampilkan form reset password
+     */
+    public function showResetPasswordForm($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
+    /**
+     * Proses reset password
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+ 
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+ 
+            $user->save();
+ 
+            event(new PasswordReset($user));
+        }
+    );
+ 
+    return $status === Password::PasswordReset
+        ? redirect()->route('login')->with('status', __($status))
+        : back()->withErrors(['email' => [__($status)]]);
     }
 
     /**
@@ -126,6 +242,7 @@ class AuthController extends Controller
     public function showProfile()
     {
         $user = Auth::user();
+
         return view('pages.user.profile', compact('user'));
     }
 
@@ -136,7 +253,7 @@ class AuthController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
             'password' => 'nullable|min:6|confirmed',
         ]);
 
@@ -150,5 +267,4 @@ class AuthController extends Controller
 
         return back()->with('success', 'Profil berhasil diperbarui!');
     }
-
 }
