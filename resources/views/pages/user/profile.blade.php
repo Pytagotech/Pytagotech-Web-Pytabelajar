@@ -1,100 +1,108 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.main')
+@section('title', 'Profil Saya')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Saya | Pytabelajar</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+@section('content')
+<div class="relative max-w-3xl mx-auto px-6 py-10">
 
-<body class="bg-[#f5f9fb] text-slate-800">
+    {{-- Glow --}}
+    <div class="absolute inset-0 -z-10">
+        <span class="absolute -top-20 -right-20 w-72 h-72 bg-green-300/30 rounded-full blur-3xl"></span>
+        <span class="absolute bottom-0 -left-20 w-72 h-72 bg-sky-300/30 rounded-full blur-3xl"></span>
+    </div>
 
-    <!-- Navbar -->
-    <header class="fixed inset-x-0 top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-        <nav class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a href="{{ route('home') }}" class="text-2xl font-extrabold text-[#3BAFDA]">Pytabelajar</a>
+    <div class="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-xl border border-slate-100">
 
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                        class="px-3 py-1 rounded-md border border-[#3BAFDA] text-[#3BAFDA] font-semibold hover:bg-[#3BAFDA] hover:text-white transition">
-                        Logout
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Konten Profil -->
-    <main class="max-w-3xl mx-auto px-6 pt-28 pb-16">
-        <h2 class="text-3xl font-bold text-center text-[#0f3b45] mb-8">Profil Saya</h2>
-
-        @if (session('success'))
-            <div class="bg-green-100 text-green-800 p-3 rounded-md text-center mb-4">
+        @if(session('success'))
+            <div class="mb-6 bg-green-100 text-green-700 px-4 py-3 rounded-xl font-semibold">
                 {{ session('success') }}
             </div>
         @endif
 
-        <div class="bg-white rounded-2xl shadow-lg p-8">
-            <form action="{{ route('user.profile.update') }}" method="POST">
-                @csrf
+        {{-- Header --}}
+        <div class="flex flex-col sm:flex-row items-center gap-6 mb-10">
+            <div class="relative group">
+                <img
+                    id="avatarPreview"
+                    src="{{ $user->avatar
+                        ? asset('storage/'.$user->avatar)
+                        : 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=16a34a&color=fff' }}"
+                    class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg transition">
 
-                {{-- Nama --}}
-                <div class="mb-5">
-                    <label class="block text-slate-700 font-semibold mb-1">Nama</label>
-                    <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#2A7EA3] focus:outline-none">
-                    @error('name')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                <label for="avatar"
+                    class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center
+                           opacity-0 group-hover:opacity-100 cursor-pointer transition">
+                    <i class="fa-solid fa-camera text-white text-xl"></i>
+                </label>
+            </div>
 
-                {{-- Email --}}
-                <div class="mb-5">
-                    <label class="block text-slate-700 font-semibold mb-1">Email</label>
-                    <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#2A7EA3] focus:outline-none">
-                    @error('email')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Password baru --}}
-                <div class="mb-5">
-                    <label class="block text-slate-700 font-semibold mb-1">Password Baru</label>
-                    <input type="password" name="password"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#2A7EA3] focus:outline-none"
-                        placeholder="Kosongkan jika tidak ingin mengganti">
-                    @error('password')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Konfirmasi Password --}}
-                <div class="mb-6">
-                    <label class="block text-slate-700 font-semibold mb-1">Konfirmasi Password</label>
-                    <input type="password" name="password_confirmation"
-                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#2A7EA3] focus:outline-none">
-                </div>
-
-                <div class="flex justify-between items-center gap-3">
-                    <a href="{{ route('home') }}"
-                        class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-200 text-slate-700 rounded-md font-semibold hover:bg-slate-300 transition">
-                        Kembali
-                    </a>
-                    <button type="submit"
-                        class="px-4 py-1.5 bg-[#0f3b45] text-white rounded-md font-semibold hover:bg-[#136577] transition">
-                        Simpan
-                    </button>
-                </div>
-
-            </form>
+            <div class="text-center sm:text-left">
+                <h2 class="text-2xl font-extrabold text-slate-800">{{ $user->name }}</h2>
+                <p class="text-slate-500">{{ $user->email }}</p>
+                <span class="inline-block mt-2 px-4 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
+                    USER
+                </span>
+            </div>
         </div>
-    </main>
 
-</body>
+        {{-- Form --}}
+        <form method="POST" action="{{ route('user.profile.update') }}"
+              enctype="multipart/form-data" class="space-y-6">
+            @csrf
 
-</html>
+            <input type="file" name="avatar" id="avatar" accept="image/*" class="hidden">
+
+            @if($user->avatar)
+                <label class="flex items-center gap-2 text-sm text-red-600 font-semibold">
+                    <input type="checkbox" name="remove_avatar">
+                    Hapus avatar
+                </label>
+            @endif
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="font-bold text-sm">Nama</label>
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                        class="w-full mt-2 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label class="font-bold text-sm">Email</label>
+                    <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                        class="w-full mt-2 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-green-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input type="password" name="password" placeholder="Password baru"
+                    class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-green-500">
+                <input type="password" name="password_confirmation" placeholder="Konfirmasi password"
+                    class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg">
+                Simpan Perubahan
+            </button>
+        </form>
+    </div>
+</div>
+
+{{-- LIVE PREVIEW SCRIPT --}}
+<script>
+document.getElementById('avatar').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        alert('File harus berupa gambar!');
+        e.target.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        document.getElementById('avatarPreview').src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>
+@endsection

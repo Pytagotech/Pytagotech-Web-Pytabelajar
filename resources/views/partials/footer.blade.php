@@ -1,7 +1,7 @@
 <footer class="mt-16 bg-[#0a0f0a] text-slate-400 border-t border-green-900/30">
     <div class="max-w-6xl mx-auto px-6 pt-12 pb-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-left">
-            
+
             {{-- Kolom 1: Brand & Deskripsi --}}
             <div class="space-y-4">
                 <div class="text-2xl font-bold text-white">
@@ -28,9 +28,10 @@
                 <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-xs">Navigasi</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="/" class="hover:text-green-500 transition">Beranda</a></li>
-                    <li><a href="#services" class="hover:text-green-500 transition">Layanan</a></li>
                     <li><a href="#about" class="hover:text-green-500 transition">Tentang Kami</a></li>
-                    <li><a href="/login" class="hover:text-green-500 transition">Masuk Admin</a></li>
+                    <li><a href="#services" class="hover:text-green-500 transition">Layanan</a></li>
+                    <li><a href="#testimony" class="hover:text-green-500 transition">Testimoni</a></li>
+                    <li><a href="#contact" class="hover:text-green-500 transition">Contact</a></li>
                 </ul>
             </div>
 

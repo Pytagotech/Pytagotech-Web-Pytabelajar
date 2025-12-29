@@ -6,28 +6,25 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
     /**
-     * Tampilkan dashboard admin
+     * Dashboard Admin
      */
     public function dashboard()
-{
-    $totalUsers = User::count();
-    $totalServices = \App\Models\Service::count();
-
-    return view('admin.dashboard', [
-        'title' => 'Dashboard Admin',
-        'user' => auth()->user(),
-        'totalUsers' => $totalUsers,
-        'totalServices' => $totalServices,
-    ]);
-}
-
+    {
+        return view('admin.dashboard', [
+            'title' => 'Dashboard Admin',
+            'user' => auth()->user(),
+            'totalUsers' => User::count(),
+            'totalServices' => \App\Models\Service::count(),
+        ]);
+    }
 
     /**
-     * Tampilkan profil admin
+     * Profile Admin
      */
     public function profile()
     {
@@ -38,29 +35,37 @@ class AdminController extends Controller
     }
 
     /**
-     * Update profil admin (nama, email, password)
+     * Update Profile (Admin)
      */
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
 
-        // Validasi input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:6|confirmed', // password_confirmation otomatis dicek
+            'password' => 'nullable|min:6|confirmed',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-
-        // Jika password diisi, hash dan update
-        if (!empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
+        // Upload avatar
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                Storage::delete($user->avatar);
+            }
+            $validated['avatar'] = $request->file('avatar')->store('avatars');
         }
 
-        $user->save(); // simpan perubahan
+        // Update data
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'avatar' => $validated['avatar'] ?? $user->avatar,
+            'password' => !empty($validated['password'])
+                ? Hash::make($validated['password'])
+                : $user->password,
+        ]);
 
-        return back()->with('success', 'Profil berhasil diperbarui!');
+        return back()->with('success', 'Profil berhasil diperbarui ✨');
     }
 }

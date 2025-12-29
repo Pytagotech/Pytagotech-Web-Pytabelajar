@@ -1,4 +1,5 @@
-<label for="sidebar-toggle" class="lg:hidden fixed top-4 left-4 z-50 bg-green-700 text-white p-2 rounded-md cursor-pointer shadow-md">
+<label for="sidebar-toggle"
+    class="lg:hidden fixed top-4 left-4 z-50 bg-green-700 text-white p-2 rounded-md cursor-pointer shadow-md">
     ☰
 </label>
 
@@ -14,27 +15,35 @@
     </div>
 
     <nav aria-label="Admin sidebar" class="flex flex-col gap-2 text-[15px]">
-        
+
         <a href="{{ route('admin.dashboard') }}"
-            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200 
+            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200
             {{ request()->routeIs('admin.dashboard') ? 'bg-white/20 shadow-inner' : 'hover:bg-white/10' }}">
             <i class="fa-solid fa-gauge w-5 text-green-300"></i>
             <span>Dashboard</span>
         </a>
 
         <a href="{{ route('admin.services.index') }}"
-            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200 
+            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200
             {{ request()->routeIs('admin.services.*') ? 'bg-white/20 shadow-inner' : 'hover:bg-white/10' }}">
             <i class="fa-solid fa-user-gear w-5 text-green-300"></i>
             <span>Services</span>
         </a>
 
         <a href="{{ route('admin.profile') }}"
-            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200 
+            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200
             {{ request()->routeIs('admin.profile') ? 'bg-white/20 shadow-inner' : 'hover:bg-white/10' }}">
             <i class="fa-solid fa-user w-5 text-green-300"></i>
             <span>Profil</span>
         </a>
+
+        <a href="{{ route('home') }}"
+            class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-xl transition duration-200
+            {{ request()->routeIs('home') ? 'bg-white/20 shadow-inner' : 'hover:bg-white/10' }}">
+            <i class="fa-solid fa-house w-5 text-green-300"></i>
+            <span>Home</span>
+        </a>
+
 
         <form method="POST" action="{{ route('logout') }}" class="mt-6 border-t border-white/10 pt-6">
             @csrf
