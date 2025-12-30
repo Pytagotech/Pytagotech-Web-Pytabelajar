@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 
 class AuthController extends Controller
@@ -64,7 +65,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses login: '.$e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses login: ' . $e->getMessage())->withInput();
         }
     }
 
@@ -110,7 +111,7 @@ class AuthController extends Controller
                 return redirect()->back()->with('error', 'Email atau password salah.')->withInput();
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses login: '.$e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses login: ' . $e->getMessage())->withInput();
         }
     }
 
@@ -148,7 +149,7 @@ class AuthController extends Controller
         return redirect()->route('home')->with('success', 'Email berhasil diverifikasi!');
     }
 
-    /** 
+    /**
      * Kirim ulang link verifikasi email
      */
     public function resendVerification(Request $request)
@@ -182,8 +183,8 @@ class AuthController extends Controller
         );
 
         return $status === Password::ResetLinkSent
-        ? back()->with(['status' => __($status)])
-        : back()->withErrors(['email' => __($status)]);
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
     }
 
     /**
@@ -200,27 +201,27 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
- 
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function (User $user, string $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
- 
-            $user->save();
- 
-            event(new PasswordReset($user));
-        }
-    );
- 
-    return $status === Password::PasswordReset
-        ? redirect()->route('login')->with('status', __($status))
-        : back()->withErrors(['email' => [__($status)]]);
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PasswordReset
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     }
 
     /**
@@ -254,9 +255,24 @@ class AuthController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6|confirmed',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($request->has('remove_avatar') && $user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+            $user->avatar = null;
+        }
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            $validated['avatar'] = $request->file('avatar')
+                ->store('avatars', 'public');
+        }
 
         if ($request->filled('password')) {
             $validated['password'] = Hash::make($request->password);
@@ -266,6 +282,6 @@ class AuthController extends Controller
 
         $user->update($validated);
 
-        return back()->with('success', 'Profil berhasil diperbarui!');
+        return back()->with('success', 'Profil berhasil diperbarui ✨');
     }
 }

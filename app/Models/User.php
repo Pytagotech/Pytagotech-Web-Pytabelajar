@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role',
+        'avatar',
     ];
 
     /**
@@ -35,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
-    
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

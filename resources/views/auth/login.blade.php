@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Masuk | Pytabelajar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="{{ asset('icon/pytagotech.icon.cc.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('icon/pytabelajar.png') }}">
     <style>
         body {
             background-image: url('{{ asset("assets/image/authbackground.jpg") }}');
