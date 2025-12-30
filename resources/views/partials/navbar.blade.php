@@ -45,7 +45,7 @@
                     </span>
                 </a>
 
-                {{-- Desktop Navigation (Essential Link) --}}
+                {{-- Desktop Navigation --}}
                 <div class="hidden md:flex md:items-center md:gap-6">
                     @foreach (['Home' => '#home', 'Tentang' => '#about', 'Layanan' => '#services', 'Testimoni' => '#testimony', 'Kontak' => '#contact'] as $label => $link)
                         <a href="{{ $link }}"
@@ -55,48 +55,61 @@
                     @endforeach
                 </div>
 
-                {{-- Auth Section (Essential Features) --}}
+                {{-- Auth Section --}}
                 <div class="flex items-center gap-4 relative">
                     @guest
                         <a href="{{ route('login') }}"
-                            class="hidden md:inline-block px-6 py-2.5 rounded-xl bg-green-600 text-white font-bold shadow-lg shadow-green-100 hover:bg-green-700 transition-all">
+                            class="hidden md:inline-block px-6 py-2.5 rounded-xl bg-green-600 text-white font-bold shadow-lg hover:bg-green-700 transition-all">
                             Login
                         </a>
                     @else
-                        <div class="hidden md:block relative">
-                            <button id="profileBtn"
-                                class="flex items-center gap-3 px-4 py-2 rounded-xl bg-green-50 text-green-700 font-bold
-                                    hover:bg-green-100 transition-all border border-green-100">
-                                <img src="{{ auth()->user()->avatar
-                                    ? asset('storage/' . auth()->user()->avatar)
-                                    : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=16a34a&color=fff' }}"
-                                    alt="Profile"
-                                    class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
-                                <span>{{ explode(' ', auth()->user()->name)[0] }}</span>
-                                <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                            </button>
+                        {{-- ================= ADMIN ================= --}}
+                        @if (auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-xl
+                                   bg-green-600 text-white font-bold shadow-lg hover:bg-green-700 transition-all">
+                                <i class="fa-solid fa-house-lock"></i>
+                                Dashboard
+                            </a>
 
+                            {{-- ================= USER ================= --}}
+                        @else
+                            <div class="hidden md:block relative">
+                                <button id="profileBtn"
+                                    class="flex items-center gap-3 px-4 py-2 rounded-xl bg-green-50 text-green-700 font-bold
+                                       hover:bg-green-100 transition-all border border-green-100">
 
-                            {{-- Dropdown Desktop --}}
-                            <div id="profileDropdown"
-                                class="hidden absolute right-0 mt-3 w-52 bg-white border border-slate-100 rounded-2xl shadow-2xl z-50 overflow-hidden py-2">
-                                <a href="{{ route('user.profile') }}"
-                                    class="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-green-50 transition font-semibold">
-                                    <i class="fa-solid fa-user text-green-500"></i> Profil Saya
-                                </a>
-                                <div class="border-t border-slate-50 my-1"></div>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 transition font-bold flex items-center gap-3">
-                                        <i class="fa-solid fa-right-from-bracket"></i> Logout
-                                    </button>
-                                </form>
+                                    <img src="{{ auth()->user()->avatar
+                                        ? asset('storage/' . auth()->user()->avatar)
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=16a34a&color=fff' }}"
+                                        class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm">
+
+                                    <span>{{ explode(' ', auth()->user()->name)[0] }}</span>
+                                    <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                                </button>
+
+                                {{-- Dropdown --}}
+                                <div id="profileDropdown"
+                                    class="hidden absolute right-0 mt-3 w-52 bg-white border border-slate-100
+                                       rounded-2xl shadow-2xl z-50 overflow-hidden py-2">
+                                    <a href="{{ route('user.profile') }}"
+                                        class="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-green-50 font-semibold">
+                                        <i class="fa-solid fa-user text-green-500"></i> Profil Saya
+                                    </a>
+                                    <div class="border-t border-slate-50 my-1"></div>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button
+                                            class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 font-bold flex items-center gap-3">
+                                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     @endguest
 
-                    {{-- Mobile Menu Trigger --}}
+                    {{-- Mobile Menu Button --}}
                     <button id="menuBtn"
                         class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-green-50 transition-colors">
                         <i class="fa-solid fa-bars-staggered text-xl"></i>
@@ -105,32 +118,50 @@
             </div>
         </div>
 
-        {{-- Mobile Menu Panel --}}
+        {{-- ================= MOBILE MENU ================= --}}
         <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 pb-6 shadow-inner">
             <div class="px-6 pt-4 space-y-2">
-                @foreach (['Home' => '#home', 'About' => '#about', 'Services' => '#services', 'Testimony' => '#testimony', 'Contact' => '#contact'] as $label => $link)
+                @foreach (['Home' => '#home', 'Tentang' => '#about', 'Layanan' => '#services', 'Testimoni' => '#testimony', 'Kontak' => '#contact'] as $label => $link)
                     <a href="{{ $link }}"
-                        class="block px-4 py-3 rounded-xl font-bold text-slate-700 hover:bg-green-50 hover:text-green-600 transition">{{ $label }}</a>
+                        class="block px-4 py-3 rounded-xl font-bold text-slate-700 hover:bg-green-50 hover:text-green-600 transition">
+                        {{ $label }}
+                    </a>
                 @endforeach
 
                 <div class="pt-4 border-t border-gray-50 mt-4">
                     @guest
                         <a href="{{ route('login') }}"
-                            class="block w-full text-center px-4 py-4 rounded-2xl bg-green-600 text-white font-bold shadow-lg shadow-green-100">Login</a>
+                            class="block w-full text-center px-4 py-4 rounded-2xl bg-green-600 text-white font-bold">
+                            Login
+                        </a>
                     @else
-                        <a href="{{ route('user.profile') }}"
-                            class="block w-full text-center px-4 py-4 rounded-2xl border-2 border-green-100 text-green-700 font-bold hover:bg-green-50">Profil
-                            Saya</a>
-                        <form action="{{ route('logout') }}" method="POST" class="mt-3">
-                            @csrf
-                            <button type="submit"
-                                class="block w-full text-center px-4 py-4 rounded-2xl bg-red-500 text-white font-bold hover:bg-red-600">Logout</button>
-                        </form>
+                        {{-- ADMIN --}}
+                        @if (auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="block w-full text-center px-4 py-4 rounded-2xl bg-green-600 text-white font-bold">
+                                Dashboard
+                            </a>
+
+                            {{-- USER --}}
+                        @else
+                            <a href="{{ route('user.profile') }}"
+                                class="block w-full text-center px-4 py-4 rounded-2xl border-2 border-green-100 text-green-700 font-bold hover:bg-green-50">
+                                Profil Saya
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST" class="mt-3">
+                                @csrf
+                                <button type="submit"
+                                    class="block w-full text-center px-4 py-4 rounded-2xl bg-red-500 text-white font-bold hover:bg-red-600">
+                                    Logout
+                                </button>
+                            </form>
+                        @endif
                     @endguest
                 </div>
             </div>
         </div>
     </nav>
+
 </header>
 
 <script>

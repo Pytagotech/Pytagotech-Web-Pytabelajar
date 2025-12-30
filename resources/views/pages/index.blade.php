@@ -82,97 +82,139 @@
     </section>
 
     {{-- ABOUT --}}
-    <section id="about" class="max-w-6xl mx-auto px-6 py-20">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-                <h2 class="text-3xl font-extrabold text-slate-800">Tentang Kami</h2>
-                <p class="mt-4 text-slate-600 leading-relaxed">
-                    Pytabelajar adalah platform les privat interaktif yang membantu anak-anak memahami dunia web development
-                    dari nol. Dengan metode pembelajaran yang menyenangkan, si kecil bisa menguasai HTML, CSS, hingga
-                    JavaScript!
-                </p>
+    <section id="about" class="relative overflow-hidden bg-white">
+        <!-- glow background -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-green-200/30 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 -right-32 w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl"></div>
 
-                <div class="mt-8 space-y-4">
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="flex-shrink-0 w-10 h-10 rounded-lg bg-green-100 text-green-700 flex items-center justify-center font-bold">
-                            ✓</div>
-                        <span class="text-slate-700 font-medium">Kurikulum project-based & fun learning</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="flex-shrink-0 w-10 h-10 rounded-lg bg-green-100 text-green-700 flex items-center justify-center font-bold">
-                            ✓</div>
-                        <span class="text-slate-700 font-medium">Mentor sabar & feedback rutin</span>
+        <div class="max-w-6xl mx-auto px-6 py-24">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+                <!-- TEXT -->
+                <div class="about-left opacity-0 translate-y-10 transition-all duration-1000">
+                    <span
+                        class="inline-block mb-3 px-4 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold tracking-widest">
+                        Tentang Kami
+                    </span>
+
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">
+                        Belajar Web Jadi <br>
+                        <span class="text-green-600">Seru & Bermakna</span>
+                    </h2>
+
+                    <p class="mt-6 text-slate-600 leading-relaxed">
+                        Pytabelajar adalah platform les privat interaktif yang membantu anak-anak
+                        memahami dunia web development dari nol. Kami percaya belajar harus terasa
+                        menyenangkan, bukan menakutkan.
+                    </p>
+
+                    <div class="mt-8 space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-2 h-2 mt-2 rounded-full bg-green-600"></div>
+                            <p class="text-slate-700 font-medium">
+                                Kurikulum <span class="font-bold">project-based</span> yang bikin anak aktif
+                            </p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-2 h-2 mt-2 rounded-full bg-green-600"></div>
+                            <p class="text-slate-700 font-medium">
+                                Mentor sabar dengan <span class="font-bold">feedback rutin</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {{-- Ilustrasi kartu --}}
-            <div class="relative order-1 md:order-2 px-4">
-                <div class="bg-white rounded-3xl p-4 shadow-2xl transform rotate-2 border border-slate-100">
+                <!-- VISUAL CARD -->
+                <div class="relative about-right opacity-0 translate-y-10 transition-all duration-1000 delay-200">
+
+                    <div class="relative bg-white rounded-3xl p-6 shadow-2xl border border-slate-100">
+                        <div
+                            class="relative h-64 rounded-2xl bg-gradient-to-br from-green-50 via-emerald-50 to-sky-50 overflow-hidden">
+
+                            <!-- floating dots -->
+                            <div class="absolute top-6 left-6 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            <div class="absolute bottom-10 right-10 w-4 h-4 bg-emerald-400 rounded-full animate-pulse">
+                            </div>
+
+                            <!-- center text -->
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <h3 class="text-xl font-extrabold text-slate-800">
+                                    Web Development
+                                </h3>
+                                <p class="mt-2 text-sm text-slate-600">
+                                    HTML • CSS • JavaScript
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- floating badge -->
                     <div
-                        class="bg-gradient-to-br from-yellow-50 to-purple-50 rounded-2xl h-64 flex items-center justify-center">
-                        <i class="fa-solid fa-laptop-code text-7xl text-green-500"></i>
+                        class="absolute -top-6 -right-6 bg-white px-5 py-3 rounded-2xl shadow-xl border border-slate-100 animate-float">
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">
+                            Fokus
+                        </p>
+                        <p class="text-sm font-bold text-green-600">
+                            Anak & Remaja
+                        </p>
                     </div>
                 </div>
-                {{-- Floating info (Standar Tailwind animation) --}}
-                <div
-                    class="absolute -top-4 -left-2 bg-white rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3 animate-bounce">
-                    <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
-                        <i class="fa-solid fa-trophy"></i>
-                    </div>
-                    <div>
-                        <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Hasil</div>
-                        <div class="font-bold text-slate-800 text-sm">Percaya Diri</div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
 
+
     {{-- SERVICES --}}
     <section id="services" class="bg-slate-50">
         <div class="max-w-6xl mx-auto px-6 py-20">
-            <div class="text-center mb-12">
-                <span
-                    class="inline-block mb-4 px-5 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-widest shadow-sm">
-                    Program Kami
-                </span>
 
-                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 tracking-tight">
+            <!-- SECTION TITLE -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-slate-800 tracking-tight">
                     Services
-                </h1>
+                </h2>
 
-                <div class="mt-4 mx-auto w-16 h-1 rounded-full bg-green-600"></div>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">
+                    Layanan yang kami sediakan untuk membantu kebutuhan digital Anda
+                    dengan kualitas terbaik dan pendekatan profesional.
+                </p>
+
+                <!-- accent -->
+                <div class="mt-6 mx-auto w-20 h-[4px] rounded-full bg-green-500"></div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- SERVICES GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 @forelse ($services as $service)
                     <div
-                        class="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-transparent hover:border-green-200 flex gap-5">
+                        class="group relative bg-white rounded-3xl p-8
+                           border border-slate-200
+                           transition-all duration-300
+                           hover:-translate-y-1
+                           hover:border-green-300
+                           hover:shadow-xl">
 
+                        <!-- soft glow -->
                         <div
-                            class="w-16 h-16 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0 text-green-600 text-2xl group-hover:scale-110 transition">
-                            <i class="fa-solid fa-graduation-cap"></i>
+                            class="absolute inset-0 rounded-3xl pointer-events-none
+                               ring-1 ring-transparent
+                               group-hover:ring-green-200
+                               transition">
                         </div>
 
-                        <div>
-                            <h4 class="text-lg font-bold text-slate-800">
-                                {{ $service->title }}
-                            </h4>
+                        <h4 class="text-xl font-extrabold text-slate-800 tracking-tight">
+                            {{ $service->title }}
+                        </h4>
 
-                            <p class="mt-1 text-slate-600 text-sm leading-relaxed">
-                                {{ $service->description }}
-                            </p>
+                        <p class="mt-4 text-slate-600 text-sm leading-relaxed">
+                            {{ $service->description }}
+                        </p>
 
-                            <span
-                                class="inline-block mt-3 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase">
-                                Program
-                            </span>
-                        </div>
+                        <div class="mt-6 w-14 h-[3px] rounded-full bg-green-500/80"></div>
                     </div>
                 @empty
-                    <div class="col-span-2 text-center text-slate-500 italic">
+                    <div class="col-span-2 text-center text-slate-500 italic py-20">
                         Belum ada program yang tersedia.
                     </div>
                 @endforelse
@@ -180,6 +222,8 @@
 
         </div>
     </section>
+
+
 
     {{-- TESTIMONIALS --}}
     <section id="testimony" class="max-w-6xl mx-auto px-6 py-20">
@@ -234,12 +278,14 @@
                         {{-- User Info + Edit --}}
                         <div class="flex items-center justify-between mt-6">
                             <div class="flex items-center gap-4">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-green-600
-                                        flex items-center justify-center
-                                        text-white font-bold text-xs">
-                                    {{ strtoupper(substr($testimony->user->name ?? 'U', 0, 1)) }}
-                                </div>
+                                <img src="{{ $testimony->user && $testimony->user->avatar
+                                    ? asset('storage/' . $testimony->user->avatar)
+                                    : 'https://ui-avatars.com/api/?name=' .
+                                        urlencode($testimony->user->name ?? 'User') .
+                                        '&background=16a34a&color=fff' }}"
+                                    alt="Foto Profil"
+                                    class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm">
+
 
                                 <div>
                                     <div class="font-bold text-slate-800 text-sm">

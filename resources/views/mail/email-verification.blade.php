@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/png" href="{{ asset('icon/pytabelajar.png') }}">
     <style>
         body {
             background-color: #f8fafc;
@@ -126,7 +127,7 @@
 
         <div class="container">
             <h1>Halo, {{ $name ?? 'Pelajar' }}!</h1>
-            
+
             <p>
                 @if(isset($introLines) && is_array($introLines))
                     {{ implode(' ', $introLines) }}
@@ -142,7 +143,7 @@
             </div>
 
             <p>Jika Anda tidak merasa melakukan pendaftaran ini, silakan abaikan email ini.</p>
-            
+
             <p>Salam,<br>Tim Pytabelajar</p>
 
             <div class="subcopy">

@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" type="image/png" href="{{ asset('icon/pytabelajar.png') }}">
     <style>
         body {
             background-color: #f8fafc;
@@ -131,7 +132,7 @@
 
         <div class="container">
             <h1>Halo!</h1>
-            
+
             <p>Anda menerima email ini karena kami menerima permintaan atur ulang kata sandi (reset password) untuk akun Anda.</p>
 
             <div class="button-wrapper">
@@ -142,7 +143,7 @@
 
             <p>Tautan reset password ini akan kedaluwarsa dalam 60 menit.</p>
             <p>Jika Anda tidak merasa meminta pengaturan ulang password, tidak ada tindakan lebih lanjut yang diperlukan.</p>
-            
+
             <p>Salam,<br>Tim Pytabelajar</p>
 
             <div class="subcopy">

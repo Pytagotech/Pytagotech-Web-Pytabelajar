@@ -9,10 +9,20 @@
         </span>
 
         <div class="relative">
-            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=16a34a&color=fff"
-                 alt="Avatar"
-                 class="w-10 h-10 rounded-full border-2 border-green-500 shadow-sm transition-transform hover:scale-105">
-            <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
-        </div>
+    <img
+        src="{{ auth()->user()->avatar
+            ? asset('storage/' . auth()->user()->avatar)
+            : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'User') . '&background=16a34a&color=fff' }}"
+        alt="Avatar"
+        class="w-10 h-10 rounded-full object-cover border-2 border-green-500 shadow-sm
+               transition-transform hover:scale-105">
+
+    {{-- Status Online --}}
+    <span
+        class="absolute bottom-0 right-0 w-3 h-3 bg-green-500
+               border-2 border-white rounded-full">
+    </span>
+</div>
+
     </div>
 </header>
